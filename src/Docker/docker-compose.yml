@@ -1,0 +1,26 @@
+version: '3'
+
+networks:
+  mongo-network:
+    driver: bridge
+
+services:
+  fastapi:
+    build: FastAPI
+    depends_on:
+      - mongodb
+    ports:
+      - "443:443"
+    networks:
+      - mongo-network
+
+  mongodb:
+    image: 'mongo:4.2'
+    container_name: "mongodb"
+    restart: on-failure
+    ports:
+      - '27017:27017'
+    networks:
+      - mongo-network
+    volumes:
+    - ../store/mongodb:/data/db
